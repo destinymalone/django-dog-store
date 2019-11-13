@@ -1,11 +1,42 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from app.models import DogProduct, Purchase, DogTag
+# from app.models import UserProfile
 from django.views import View
-from app.forms import NewDogTagForm
+from app.forms import NewDogTagForm 
+# from app.forms import UserProfileForm
 from datetime import datetime
 from django.contrib import messages
+# from django.views.generic import FormView, UpdateView
 
 # Create your views here.
+
+
+# class NewUserProfileView(FormView):
+#     template_name = "profiles/user_profile.html"
+#     form_class = UserProfileForm
+
+#     def form_valid(self, form):
+#         form.save(self.request.user)
+#         return super(NewUserProfileView, self).form_valid(form)
+
+#     def get_success_url(self, *args, **kwargs):
+#         return reverse("new-user-profile")
+
+
+# class EditUserProfileView(UpdateView):
+#     model = UserProfile
+#     form_class = UserProfileForm
+#     template_name = "profiles/user_profile.html"
+
+#     def get_object(self, *args, **kwargs):
+#         user = get_object_or_404(User, pk=self.kwargs["pk"])
+
+#         return user.userprofile
+
+#     def get_success_url(self, *args, **kwargs):
+#         return reverse("edit-user-profile")
+
+
 class Home(View):
     def get(self, request):
         products = DogProduct.objects.all()
@@ -57,7 +88,7 @@ class NewDogTag(View):
         else:
             form = NewTicketForm()
             return render(request, "new_dog_template.html", {"form": form})
-            
+
 
 class DogTagList(View):
     def get(self, request):

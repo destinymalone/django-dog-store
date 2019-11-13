@@ -19,6 +19,14 @@ from app import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # path(
+    #     "^profiles/new/$", views.NewUserProfileView.as_view(), name="new-user-profile"
+    # ),
+    # path(
+    #     "^users/(?P<pk>\d+)/edit/$",
+    #     views.EditUserProfileView.as_view(),
+    #     name="edit-user-profile",
+    # ),
     path("", views.Home.as_view(), name="home"),
     path(
         "dog-product/<dog_product_id>",
