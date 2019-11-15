@@ -47,7 +47,7 @@ urlpatterns = [
         name="purchase_cat_product",
     ),
     path(
-        "purchase/<cat_purchase_id>",
+        "catpurchase/<cat_purchase_id>",
         views.CatPurchaseDetail.as_view(),
         name="purchase_detail_two",
     ),

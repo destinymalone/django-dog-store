@@ -81,24 +81,24 @@ class CatProductDetail(View):
 
 class PurchaseCatProduct(View):
     def post(self, request, cat_product_id):
-        product = CatProduct.objects.get(id=cat_product_id)
-        if product.quantity != 0:
-            product.quantity -= 1
-            product.save()
+        cat_product = CatProduct.objects.get(id=cat_product_id)
+        if cat_product.quantity != 0:
+            cat_product.quantity -= 1
+            cat_product.save()
             p = CatPurchase.objects.create(
-                cat_product=product, purchased_at=datetime.now()
+                cat_product=cat_product, purchased_at=datetime.now()
             )
-            messages.success(request, f"Purchased {product.name}")
+            messages.success(request, f"Purchased {cat_product.name}")
             return redirect("purchase_detail_two", p.id)
         else:
-            messages.error(request, f"{product.name} is out of stock")
+            messages.error(request, f"{cat_product.name} is out of stock")
             return redirect("cat_product_detail")
 
 
 class CatPurchaseDetail(View):
     def get(self, request, cat_purchase_id):
         detail = CatPurchase.objects.get(id=cat_purchase_id)
-        return render(request, "purchase_detail_two.html", {"purchase": detail})
+        return render(request, "purchase_detail_two.html", {"cat_purchase": detail})
 
 
 class NewCatTag(View):
