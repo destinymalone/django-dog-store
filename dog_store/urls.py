@@ -19,14 +19,6 @@ from app import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path(
-    #     "^profiles/new/$", views.NewUserProfileView.as_view(), name="new-user-profile"
-    # ),
-    # path(
-    #     "^users/(?P<pk>\d+)/edit/$",
-    #     views.EditUserProfileView.as_view(),
-    #     name="edit-user-profile",
-    # ),
     path("", views.Home.as_view(), name="home"),
     path(
         "dog-product/<dog_product_id>",
@@ -43,4 +35,22 @@ urlpatterns = [
     ),
     path("dogtag/new", views.NewDogTag.as_view(), name="new_dog_tag"),
     path("dogtag", views.DogTagList.as_view(), name="dog_tag_list"),
+    path("cat-product", views.Home2.as_view(), name="home2"),
+    path(
+        "cat-product/<cat_product_id>",
+        views.CatProductDetail.as_view(),
+        name="cat_product_detail",
+    ),
+    path(
+        "cat-product/<cat_product_id>/purchase",
+        views.PurchaseCatProduct.as_view(),
+        name="purchase_cat_product",
+    ),
+    path(
+        "purchase/<cat_purchase_id>",
+        views.CatPurchaseDetail.as_view(),
+        name="purchase_detail_two",
+    ),
+    path("cattag/new", views.NewCatTag.as_view(), name="new_cat_tag"),
+    path("cattag", views.CatTagList.as_view(), name="cat_tag_list"),
 ]

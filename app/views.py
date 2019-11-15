@@ -1,40 +1,11 @@
 from django.shortcuts import render, redirect, reverse
-from app.models import DogProduct, Purchase, DogTag
-# from app.models import UserProfile
+from app.models import DogProduct, Purchase, DogTag, CatProduct, CatPurchase, CatTag
 from django.views import View
-from app.forms import NewDogTagForm 
-# from app.forms import UserProfileForm
+from app.forms import NewDogTagForm, NewCatTagForm
 from datetime import datetime
 from django.contrib import messages
-# from django.views.generic import FormView, UpdateView
 
 # Create your views here.
-
-
-# class NewUserProfileView(FormView):
-#     template_name = "profiles/user_profile.html"
-#     form_class = UserProfileForm
-
-#     def form_valid(self, form):
-#         form.save(self.request.user)
-#         return super(NewUserProfileView, self).form_valid(form)
-
-#     def get_success_url(self, *args, **kwargs):
-#         return reverse("new-user-profile")
-
-
-# class EditUserProfileView(UpdateView):
-#     model = UserProfile
-#     form_class = UserProfileForm
-#     template_name = "profiles/user_profile.html"
-
-#     def get_object(self, *args, **kwargs):
-#         user = get_object_or_404(User, pk=self.kwargs["pk"])
-
-#         return user.userprofile
-
-#     def get_success_url(self, *args, **kwargs):
-#         return reverse("edit-user-profile")
 
 
 class Home(View):
@@ -86,7 +57,7 @@ class NewDogTag(View):
             )
             return redirect("dog_tag_list")
         else:
-            form = NewTicketForm()
+            form = NewDogTagForm()
             return render(request, "new_dog_template.html", {"form": form})
 
 
@@ -94,3 +65,62 @@ class DogTagList(View):
     def get(self, request):
         tags = DogTag.objects.all()
         return render(request, "dog_tag_list.html", {"dog_tags": tags})
+
+
+class Home2(View):
+    def get(self, request):
+        products = CatProduct.objects.all()
+        return render(request, "home.html", {"cat_products": products})
+
+
+class CatProductDetail(View):
+    def get(self, request, cat_product_id):
+        product = CatProduct.objects.get(id=cat_product_id)
+        return render(request, "cat_product_detail.html", {"cat_product": product})
+
+
+class PurchaseCatProduct(View):
+    def post(self, request, cat_product_id):
+        product = CatProduct.objects.get(id=cat_product_id)
+        if product.quantity != 0:
+            product.quantity -= 1
+            product.save()
+            p = CatPurchase.objects.create(
+                cat_product=product, purchased_at=datetime.now()
+            )
+            messages.success(request, f"Purchased {product.name}")
+            return redirect("purchase_detail_two", p.id)
+        else:
+            messages.error(request, f"{product.name} is out of stock")
+            return redirect("cat_product_detail")
+
+
+class CatPurchaseDetail(View):
+    def get(self, request, cat_purchase_id):
+        detail = CatPurchase.objects.get(id=cat_purchase_id)
+        return render(request, "purchase_detail_two.html", {"purchase": detail})
+
+
+class NewCatTag(View):
+    def get(self, request):
+        form = NewCatTagForm(request.GET)
+        return render(request, "new_cat_tag.html")
+
+    def post(self, request):
+        form = NewCatTagForm(request.POST)
+        if form.is_valid():
+            t = CatTag.objects.create(
+                owner_name=form.cleaned_data["owner_name"],
+                cat_name=form.cleaned_data["cat_name"],
+                cat_birthday=form.cleaned_data["cat_birthday"],
+            )
+            return redirect("cat_tag_list")
+        else:
+            form = NewCatTagForm()
+            return render(request, "new_cat_template.html", {"form": form})
+
+
+class CatTagList(View):
+    def get(self, request):
+        tags = CatTag.objects.all()
+        return render(request, "cat_tag_list.html", {"cat_tags": tags})

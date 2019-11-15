@@ -1,16 +1,5 @@
 from django.db import models
 from django.utils import timezone
-# from django.contrib.auth.models import User
-
-
-# class UserProfile(models.Model):
-#     # Let us add some simple fields to profile
-#     user = models.OneToOneField(User, on_delete=models.PROTECT)
-#     city = models.CharField(max_length=100)
-#     country = models.CharField(max_length=10)
-
-#     def __unicode__(self):
-#         return "%s" % self.user
 
 
 class DogProduct(models.Model):
@@ -24,6 +13,12 @@ class DogProduct(models.Model):
         return self.name
 
 
+class DogTag(models.Model):
+    owner_name = models.TextField()
+    dog_name = models.TextField()
+    dog_birthday = models.DateField()
+
+
 class Purchase(models.Model):
     dog_product = models.ForeignKey(DogProduct, on_delete=models.PROTECT)
     purchased_at = models.DateTimeField(default=timezone.now)
@@ -32,7 +27,26 @@ class Purchase(models.Model):
         return f"Purchased {self.dog_product} at {self.purchased_at}"
 
 
-class DogTag(models.Model):
+class CatProduct(models.Model):
+    name = models.TextField()
+    product_type = models.TextField()
+    cat_size = models.TextField()
+    price = models.FloatField()
+    quantity = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+
+class CatTag(models.Model):
     owner_name = models.TextField()
-    dog_name = models.TextField()
-    dog_birthday = models.DateField()
+    cat_name = models.TextField()
+    cat_birthday = models.DateField()
+
+
+class CatPurchase(models.Model):
+    cat_product = models.ForeignKey(CatProduct, on_delete=models.PROTECT)
+    purchased_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Purchased {self.cat_product} at {self.purchased_at}"

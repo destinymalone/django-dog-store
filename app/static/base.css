@@ -29,3 +29,34 @@
     flex: 1;
     margin-bottom: 2rem;
 }
+.cat-tags {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 3rem;
+}
+
+.cat-tag {
+    font-family: cursive;
+    background-color: pink;
+    padding: 1rem;
+    border-radius: 1rem;
+    text-align: center;
+    border: 3px outset rgba(180,180,180,.5);
+}
+
+.cat-products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 2rem;
+}
+
+.cat-product {
+    display: flex;
+    flex-direction: column;
+}
+
+.cat-product__price {
+    flex: 1;
+    margin-bottom: 2rem;
+}
