@@ -101,7 +101,6 @@ class CatPurchaseDetail(View):
 
 class NewCatTag(View):
     def get(self, request):
-        form = NewCatTagForm(request.GET)
         return render(request, "new_cat_tag.html")
 
     def post(self, request):
@@ -114,7 +113,6 @@ class NewCatTag(View):
             )
             return redirect("cat_tag_list")
         else:
-            form = NewCatTagForm()
             return render(request, "new_cat_template.html", {"form": form})
 
 
