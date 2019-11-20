@@ -16,24 +16,24 @@ class Home(View):
 
 class DogProductDetail(View):
     def get(self, request, dog_product_id):
-        product = DogProduct.objects.get(id=dog_product_id)
-        return render(request, "dog_product_detail.html", {"dog_product": product})
+        dog_product = DogProduct.objects.get(id=dog_product_id)
+        return render(request, "dog_product_detail.html", {"dog_product": dog_product})
 
 
 class PurchaseDogProduct(View):
     def post(self, request, dog_product_id):
-        product = DogProduct.objects.get(id=dog_product_id)
-        if product.quantity != 0:
-            product.quantity -= 1
-            product.save()
+        dog_product = DogProduct.objects.get(id=dog_product_id)
+        if dog_product.quantity != 0:
+            dog_product.quantity -= 1
+            dog_product.save()
             p = Purchase.objects.create(
-                dog_product=product, purchased_at=datetime.now()
+                dog_product=dog_product, purchased_at=datetime.now()
             )
-            messages.success(request, f"Purchased {product.name}")
+            messages.success(request, f"Purchased {dog_product.name}")
             return redirect("purchase_detail", p.id)
         else:
-            messages.error(request, f"{product.name} is out of stock")
-            return redirect("dog_product_detail")
+            messages.error(request, f"{dog_product.name} is out of stock")
+            return redirect("dog_product_detail", dog_product_id)
 
 
 class PurchaseDetail(View):
@@ -44,7 +44,6 @@ class PurchaseDetail(View):
 
 class NewDogTag(View):
     def get(self, request):
-        form = NewDogTagForm(request.GET)
         return render(request, "new_dog_tag.html")
 
     def post(self, request):
@@ -57,7 +56,6 @@ class NewDogTag(View):
             )
             return redirect("dog_tag_list")
         else:
-            form = NewDogTagForm()
             return render(request, "new_dog_template.html", {"form": form})
 
 
